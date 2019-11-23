@@ -1,0 +1,272 @@
+/*    ==Scripting Parameters==
+
+    Source Server Version : SQL Server 2016 (13.0.4001)
+    Source Database Engine Edition : Microsoft SQL Server Express Edition
+    Source Database Engine Type : Standalone SQL Server
+
+    Target Server Version : SQL Server 2016
+    Target Database Engine Edition : Microsoft SQL Server Express Edition
+    Target Database Engine Type : Standalone SQL Server
+*/
+
+USE [training_log]
+GO
+
+/****** Object:  Table [dbo].[Activity]    Script Date: 11/23/2019 4:53:59 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Activity](
+	[Activity_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Micro_Iteration_Id] [int] NOT NULL,
+	[Activity_Date] [date] NULL,
+	[Activity_Category_Code] [varchar](10) NULL,
+	[Activity_Code] [varchar](10) NULL,
+	[Activity_Unit_Code] [varchar](10) NULL,
+	[Activity_Duration] [varchar](10) NULL,
+	[Activity_Set_Count] [int] NULL,
+	[Activity_Intensity_Factor] [decimal](2, 1) NULL,
+	[Activity_Time] [varchar](12) NULL,
+	[State_Rating] [int] NULL,
+	[Create_Date] [datetime] NOT NULL,
+	[Create_By] [varchar](10) NOT NULL,
+	[Mod_Date] [datetime] NOT NULL,
+	[Mod_By] [varchar](10) NOT NULL,
+ CONSTRAINT [PK_Activity] PRIMARY KEY CLUSTERED 
+(
+	[Activity_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Activity] ADD  CONSTRAINT [DF_Activity_Create_Date]  DEFAULT (getdate()) FOR [Create_Date]
+GO
+
+ALTER TABLE [dbo].[Activity] ADD  CONSTRAINT [DF_Activity_Mod_Date]  DEFAULT (getdate()) FOR [Mod_Date]
+GO
+
+ALTER TABLE [dbo].[Activity] ADD  CONSTRAINT [DF_Activity_Mod_By]  DEFAULT ('') FOR [Mod_By]
+GO
+
+ALTER TABLE [dbo].[Activity]  WITH CHECK ADD  CONSTRAINT [FK_Activity_Micro_Iteration] FOREIGN KEY([Micro_Iteration_Id])
+REFERENCES [dbo].[Micro_Iteration] ([Micro_Iteration_Id])
+GO
+
+ALTER TABLE [dbo].[Activity] CHECK CONSTRAINT [FK_Activity_Micro_Iteration]
+GO
+
+USE [training_log]
+GO
+
+/****** Object:  Table [dbo].[Code]    Script Date: 11/23/2019 4:54:46 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Code](
+	[Code_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Code_Name] [varchar](50) NOT NULL,
+	[Created_By] [varchar](10) NOT NULL,
+	[Created_Date] [datetime] NOT NULL,
+	[Modified_By] [varchar](10) NOT NULL,
+	[Modified_Date] [datetime] NOT NULL,
+ CONSTRAINT [PK_Code] PRIMARY KEY CLUSTERED 
+(
+	[Code_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Code] ADD  CONSTRAINT [DF_Code_Created_Date]  DEFAULT (getdate()) FOR [Created_Date]
+GO
+
+ALTER TABLE [dbo].[Code] ADD  CONSTRAINT [DF_Code_Modified_Date]  DEFAULT (getdate()) FOR [Modified_Date]
+GO
+
+USE [training_log]
+GO
+
+/****** Object:  Table [dbo].[Code_Detail]    Script Date: 11/23/2019 4:55:00 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Code_Detail](
+	[Code_Detail_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Code_Id] [int] NOT NULL,
+	[Code_Value] [varchar](20) NOT NULL,
+	[Code_Description] [varchar](20) NOT NULL,
+	[Created_By] [varchar](10) NOT NULL,
+	[Created_Date] [datetime] NOT NULL,
+	[Modified_Date] [datetime] NOT NULL,
+	[Modified_By] [varchar](10) NOT NULL,
+ CONSTRAINT [PK_Code_Detail] PRIMARY KEY CLUSTERED 
+(
+	[Code_Detail_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Code_Detail] ADD  CONSTRAINT [DF_Code_Detail_Created_Date]  DEFAULT (getdate()) FOR [Created_Date]
+GO
+
+ALTER TABLE [dbo].[Code_Detail] ADD  CONSTRAINT [DF_Code_Detail_Modified_Date]  DEFAULT (getdate()) FOR [Modified_Date]
+GO
+
+ALTER TABLE [dbo].[Code_Detail]  WITH CHECK ADD  CONSTRAINT [FK_Code_Detail_Code] FOREIGN KEY([Code_Id])
+REFERENCES [dbo].[Code] ([Code_Id])
+GO
+
+ALTER TABLE [dbo].[Code_Detail] CHECK CONSTRAINT [FK_Code_Detail_Code]
+GO
+
+
+/****** Object:  Table [dbo].[Event]    Script Date: 11/23/2019 4:55:17 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Event](
+	[Event_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Description] [varchar](500) NULL,
+	[Event_Date] [date] NOT NULL,
+	[Goals] [nvarchar](max) NULL,
+	[Comments] [nvarchar](max) NULL,
+	[Create_Date] [datetime] NOT NULL,
+	[Create_By] [varchar](10) NOT NULL,
+	[Mod_Date] [datetime] NOT NULL,
+	[Mod_By] [varchar](10) NOT NULL,
+ CONSTRAINT [PK_Event] PRIMARY KEY CLUSTERED 
+(
+	[Event_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Event] ADD  CONSTRAINT [DF_Event_Create_Date]  DEFAULT (getdate()) FOR [Create_Date]
+GO
+
+ALTER TABLE [dbo].[Event] ADD  CONSTRAINT [DF_Event_Mod_Date]  DEFAULT (getdate()) FOR [Mod_Date]
+GO
+
+ALTER TABLE [dbo].[Event] ADD  CONSTRAINT [DF_Event_Mod_By]  DEFAULT ('') FOR [Mod_By]
+GO
+
+CREATE TABLE [dbo].[Iteration](
+	[Iteration_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Phase_Id] [int] NOT NULL,
+	[Description] [varchar](500) NULL,
+	[Start_Date] [date] NOT NULL,
+	[End_Date] [date] NOT NULL,
+	[Comment] [nvarchar](max) NULL,
+	[Create_Date] [datetime] NOT NULL,
+	[Create_By] [varchar](10) NOT NULL,
+	[Mod_Date] [datetime] NOT NULL,
+	[Mod_By] [varchar](10) NOT NULL,
+ CONSTRAINT [PK_Iteration] PRIMARY KEY CLUSTERED 
+(
+	[Iteration_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Iteration] ADD  CONSTRAINT [DF_Iteration_Create_Date]  DEFAULT (getdate()) FOR [Create_Date]
+GO
+
+ALTER TABLE [dbo].[Iteration] ADD  CONSTRAINT [DF_Iteration_Mod_Date]  DEFAULT (getdate()) FOR [Mod_Date]
+GO
+
+ALTER TABLE [dbo].[Iteration] ADD  CONSTRAINT [DF_Iteration_Mod_By]  DEFAULT ('') FOR [Mod_By]
+GO
+
+ALTER TABLE [dbo].[Iteration]  WITH CHECK ADD  CONSTRAINT [FK_Iteration_Phase] FOREIGN KEY([Phase_Id])
+REFERENCES [dbo].[Phase] ([Phase_Id])
+GO
+
+ALTER TABLE [dbo].[Iteration] CHECK CONSTRAINT [FK_Iteration_Phase]
+GO
+
+
+CREATE TABLE [dbo].[Micro_Iteration](
+	[Micro_Iteration_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Iteration_Id] [int] NOT NULL,
+	[Micro_Iteration_Type_Code] [varchar](10) NULL,
+	[Start_Date] [date] NULL,
+	[End_Date] [date] NULL,
+	[Create_Date] [datetime] NOT NULL,
+	[Create_By] [varchar](10) NOT NULL,
+	[Mod_Date] [datetime] NOT NULL,
+	[Mod_By] [varchar](10) NOT NULL,
+ CONSTRAINT [PK_Micro_Iteration] PRIMARY KEY CLUSTERED 
+(
+	[Micro_Iteration_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Micro_Iteration] ADD  CONSTRAINT [DF_Micro_Iteration_Create_Date]  DEFAULT (getdate()) FOR [Create_Date]
+GO
+
+ALTER TABLE [dbo].[Micro_Iteration] ADD  CONSTRAINT [DF_Micro_Iteration_Mod_Date]  DEFAULT (getdate()) FOR [Mod_Date]
+GO
+
+ALTER TABLE [dbo].[Micro_Iteration] ADD  CONSTRAINT [DF_Micro_Iteration_Mod_By]  DEFAULT ('') FOR [Mod_By]
+GO
+
+ALTER TABLE [dbo].[Micro_Iteration]  WITH CHECK ADD  CONSTRAINT [FK_Micro_Iteration_Iteration] FOREIGN KEY([Iteration_Id])
+REFERENCES [dbo].[Iteration] ([Iteration_Id])
+GO
+
+ALTER TABLE [dbo].[Micro_Iteration] CHECK CONSTRAINT [FK_Micro_Iteration_Iteration]
+GO
+
+
+CREATE TABLE [dbo].[Phase](
+	[Phase_Id] [int] IDENTITY(1,1) NOT NULL,
+	[Event_Id] [int] NOT NULL,
+	[Phase_Name] [varchar](500) NULL,
+	[Start_Date] [date] NULL,
+	[End_Date] [date] NULL,
+	[Mod_By] [varchar](10) NOT NULL,
+	[Create_Date] [datetime] NOT NULL,
+	[Create_By] [varchar](10) NOT NULL,
+	[Mod_Date] [datetime] NOT NULL,
+ CONSTRAINT [PK_Phase] PRIMARY KEY CLUSTERED 
+(
+	[Phase_Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Phase] ADD  CONSTRAINT [DF_Phase_Mod_By]  DEFAULT ('') FOR [Mod_By]
+GO
+
+ALTER TABLE [dbo].[Phase] ADD  CONSTRAINT [DF_Phase_Create_Date]  DEFAULT (getdate()) FOR [Create_Date]
+GO
+
+ALTER TABLE [dbo].[Phase] ADD  CONSTRAINT [DF_Phase_Mod_Date]  DEFAULT (getdate()) FOR [Mod_Date]
+GO
+
+ALTER TABLE [dbo].[Phase]  WITH CHECK ADD  CONSTRAINT [FK_Phase_Event] FOREIGN KEY([Event_Id])
+REFERENCES [dbo].[Event] ([Event_Id])
+GO
+
+ALTER TABLE [dbo].[Phase] CHECK CONSTRAINT [FK_Phase_Event]
+GO
+
+
+
+
+
+
+
+
